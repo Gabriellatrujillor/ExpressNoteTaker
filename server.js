@@ -28,7 +28,18 @@ app.get("/notes", function (req, res) {
 });
 
 app.get("/api/notes", function (req, res) {
-  res.json(db);
+
+
+  fs.readFile("./db/db.json", "utf8", function(error, data) {
+
+    if (error) {
+      return console.log(error);
+    }
+  
+    res.json(JSON.parse(data));
+  
+  });
+
 });
 app.post("/api/notes", function (req, res) {
   //userinput == req.body

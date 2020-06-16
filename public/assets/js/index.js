@@ -76,10 +76,10 @@ const handleNoteDelete = function (event) {
 
   deleteNote(note.id).then(() => {
     //note.empty();
-    alert("deleted now next action");
+  
 
-$(this).parent(".list-group-item").empty();
 
+$(this).parent(".list-group-item").hide();
 
     getAndRenderNotes();
     renderActiveNote();
