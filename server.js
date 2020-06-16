@@ -22,6 +22,7 @@ app.use(express.static("public"));
 
 // html routes
 app.get("/notes", function (req, res) {
+
   // res.send("homepage")
   res.sendFile(path.join(__dirname, "./public/notes.html"));
 });
@@ -46,19 +47,25 @@ app.post("/api/notes", function (req, res) {
 
 app.delete("/api/notes/:id", function (req, res) {
   //userinput == req.body
+  console.log(req.params.id)
+
+  const result = db.filter(word => word.id != req.params.id);
+console.log(result)
+
+  // db.splice(req.params.id, 1)
   fs.writeFile(
     "./db/db.json",
-    JSON.stringify(db.splice(req.params.id, 1)),
+    JSON.stringify(result),
     function (err) {
       if (err) {
         return console.log(err);
       }
 
-      console.log("Success!");
+      console.log("delete success!");
     }
   );
 
-  //res.json(db);
+  res.json(db);
 });
 
 app.get("*", function (req, res) {

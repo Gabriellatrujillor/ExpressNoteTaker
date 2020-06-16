@@ -68,12 +68,19 @@ const handleNoteDelete = function (event) {
   event.stopPropagation();
 
   const note = $(this).parent(".list-group-item").data();
+  console.log(note);
 
   if (activeNote.id === note.id) {
     activeNote = {};
   }
 
   deleteNote(note.id).then(() => {
+    //note.empty();
+    alert("deleted now next action");
+
+$(this).parent(".list-group-item").empty();
+
+
     getAndRenderNotes();
     renderActiveNote();
   });
@@ -106,11 +113,12 @@ const renderNoteList = (notes) => {
   $noteList.empty();
 
   const noteListItems = [];
+  console.log(notes)
 
   // Returns jquery object for li with given text and delete button
   // unless withDeleteButton argument is provided as false
-  const create$li = (text, withDeleteButton = true) => {
-    const $li = $("<li class='list-group-item'>");
+  const create$li = (text,id, withDeleteButton = true) => {
+    const $li = $("<li class='list-group-item' id='"+id+"'>");
     const $span = $("<span>").text(text);
     $li.append($span);
 
@@ -124,11 +132,11 @@ const renderNoteList = (notes) => {
   };
 
   if (notes.length === 0) {
-    noteListItems.push(create$li("No saved Notes", false));
+    noteListItems.push(create$li("No saved Notes",-1, false));
   }
 
   notes.forEach((note) => {
-    const $li = create$li(note.title).data(note);
+    const $li = create$li(note.title, note.id).data(note);
     noteListItems.push($li);
   });
 
