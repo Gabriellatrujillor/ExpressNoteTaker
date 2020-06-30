@@ -64,7 +64,6 @@ app.delete("/api/notes/:id", function (req, res) {
   const result = db.filter(word => word.id != req.params.id);
 console.log(result)
 
-  // db.splice(req.params.id, 1)
   fs.writeFile(
     "./db/db.json",
     JSON.stringify(result),
@@ -85,14 +84,7 @@ app.get("*", function (req, res) {
   res.sendFile(path.join(__dirname, "./public/index.html"));
 });
 
-// // data table routes
-// app.get("/api/tables", function (req, res) {
-//   return res.json(tables);
-// });
 
-// app.get("/api/waitlist", function (req, res) {
-//   return res.json(waitlist);
-// });
 
 // port listener
 app.listen(PORT, function () {
