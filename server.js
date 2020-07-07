@@ -10,6 +10,8 @@ var fs = require("fs");
 // set up the express app
 var app = express();
 var PORT = process.env.PORT || 3000;
+const { v1: uuidv1 } = require('uuid');
+
 
 
 // set up express app to handle data parsing
@@ -44,7 +46,7 @@ app.get("/api/notes", function (req, res) {
 });
 app.post("/api/notes", function (req, res) {
   //userinput == req.body
-  req.body.id = db.length;
+   req.body.id = uuidv1();
   db.push(req.body);
   fs.writeFile("./db/db.json", JSON.stringify(db), function (err) {
     if (err) {
@@ -59,14 +61,25 @@ app.post("/api/notes", function (req, res) {
 
 app.delete("/api/notes/:id", function (req, res) {
   //userinput == req.body
-  console.log(req.params.id)
 
-  const result = db.filter(word => word.id != req.params.id);
-console.log(result)
+//   const result = db.filter(word => word.id != req.params.id);
+ console.log(req.params.id)
+//first find loc of the speicif data
+console.log(db.indexOf(req.params.id))
+var index=0;
+for(var i=0;i <db.length;i++){
+  if(db[i].id==req.params.id){
+    index=i;
+  }
+}
+console.log(index);
 
+//then get that index and remove it off the db 
+ db.splice(index, 1)
+  //then update your file
   fs.writeFile(
     "./db/db.json",
-    JSON.stringify(result),
+    JSON.stringify(db),
     function (err) {
       if (err) {
         return console.log(err);
